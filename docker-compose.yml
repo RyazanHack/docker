@@ -1,0 +1,40 @@
+version: '3.8'
+
+x-environment: &global_config
+  DELETE_USER_KEY: 12345
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      <<: [ *global_config ]
+
+  bitracking_api:
+    build:
+      context: ./backend
+    environment:
+      <<: [ *global_config ]
+
+  nginx:
+    build: ./nginx_ssl
+    env_file:
+      - .env
+    volumes:
+      - ./bookstore/app/static:/app/app/static
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - web
+  certbot:
+    image: certbot/certbot
+    depends_on:
+      - nginx
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
