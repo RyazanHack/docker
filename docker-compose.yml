@@ -16,6 +16,12 @@ services:
     environment:
       <<: [ *global_config ]
 
+  s3_worker:
+    build:
+      context: ./s3-worker
+    environment:
+      <<: [ *global_config ]
+
   nginx:
     build: ./nginx_ssl
     env_file:

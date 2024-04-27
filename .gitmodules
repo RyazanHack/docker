@@ -4,3 +4,7 @@
 [submodule "backend"]
 	path = backend
 	url = https://github.com/RyazanHack/backend
+[submodule "s3-worker"]
+	path = s3-worker
+	url = https://github.com/RyazanHack/s3-worker
+
