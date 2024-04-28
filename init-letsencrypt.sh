@@ -4,7 +4,7 @@ if ! [ -x "$(command -v docker compose)" ]; then
   echo 'Error: docker compose is not installed.' >&2
 #  exit 1
 fi
-domains=("$DOMAIN" "$DOMAIN_WWW" api.bitracking.ru)
+domains=("$DOMAIN" "$DOMAIN_WWW" api.bitracking.ru static.bitracking.ru)
 rsa_key_size=4096
 data_path="./certbot"
 email="$EMAI" # Adding a valid address is strongly recommended
